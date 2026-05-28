@@ -1,5 +1,5 @@
 '''
-STEP 3:
+STEP 3: (OPTIONAL)
 Before starting to silver layer, it is important to explore and understand the data.
 
 Why do this first?
