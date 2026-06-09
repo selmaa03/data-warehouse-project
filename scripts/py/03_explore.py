@@ -35,6 +35,9 @@ df = pd.read_csv(csv_path)
 pd.set_option('display.max_columns', None)
 pd.set_option('display.width', 1000)
 
+table_name = os.path.splitext(os.path.basename(csv_path))[0]
+print(f'\nTable: {table_name}')
+
 print('\nCOLUMNS: ')
 print(df.dtypes)
 
