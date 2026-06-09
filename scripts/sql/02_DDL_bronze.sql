@@ -3,7 +3,7 @@
 IF OBJECT_ID ('bronze.customers', 'U') IS NOT NULL DROP TABLE bronze.customers;
 CREATE TABLE bronze.customers (
     customer_id NVARCHAR(50),
-    customer_unique_id NVARCHAR(50) NOT NULL,
+    customer_unique_id NVARCHAR(50),
     customer_zip_code_prefix NVARCHAR(15),
     customer_city NVARCHAR(100),
     customer_state NVARCHAR(10)
