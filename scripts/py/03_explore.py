@@ -47,5 +47,5 @@ print(df.head(10))
 print('\nMissing (NULL VALUE) Counts: ')
 print(df.isnull().sum())
 
-print('\nDuplicated IDs: ')
+print('\nDuplicated Rows: ')
 print(df.duplicated().sum())
