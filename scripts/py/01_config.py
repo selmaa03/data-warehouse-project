@@ -43,7 +43,7 @@ def get_db_engine():
     # Connection string structured for SQL Server Authentication (SQL Login)
     connection_string = (
         f"mssql+pyodbc://{DB_USER}:{encoded_password}@{DB_SERVER}/{DB_NAME}"
-        "?driver=ODBC+Driver+17+for+SQL+Server"
+        "?driver=ODBC+Driver+18+for+SQL+Server"
         "&Encrypt=yes"
         "&TrustServerCertificate=yes"
     )
