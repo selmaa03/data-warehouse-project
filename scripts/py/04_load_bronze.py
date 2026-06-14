@@ -9,9 +9,10 @@ record of the source data for auditing and reprocessing before applying any tran
 '''
 
 import boto3
-import pyodbc
 import pandas as pd
 import config
+from config import get_db_engine
+from sqlalchemy import text
 
 s3 = boto3.client(
     's3',
@@ -20,16 +21,6 @@ s3 = boto3.client(
 )
 
 S3_BUCKET_NAME = 'dwh-olist-bucket'
-
-# fill  with your connection
-conn_str = (
-    'DRIVER={...............};'
-    'SERVER=.................;'
-    'DATABASE=...............;'
-    'UID=.........;'
-    'PWD=.........;'
-    'TrustServerCertificate=yes;'
-)
 
 datasets = {
     'raw-data-folder/olist_customers_dataset.csv': 'bronze.customers',
@@ -44,9 +35,7 @@ datasets = {
 }
 
 try:
-    connection = pyodbc.connect(conn_str)
-    cursor = connection.cursor()
-    cursor.fast_executemany = True
+    engine = get_db_engine()
     print('Connection Successful!')
 
     for s3_key, table_name in datasets.items():
@@ -54,19 +43,21 @@ try:
         s3_object = s3.get_object(Bucket=S3_BUCKET_NAME, Key=s3_key)
         df = pd.read_csv(s3_object['Body'])
 
-        print(f'Preparing data formatting for {table_name}...')
-        df = df.astype(object)
-        df = df.where(pd.notnull(df), None)
+        schema, table = table_name.split('.')
+
+        print(f'Truncating {table_name} to ensure a fresh load...')
+        with engine.begin() as conn:
+            conn.execute(text(f"TRUNCATE TABLE {schema}.{table}"))
 
         print(f'Inserting {len(df)} rows into {table_name}...')
-
-        columns = ', '.join(df.columns)
-        placeholders = ', '.join(['?'] * len(df.columns))
-        insert_query = f'INSERT INTO {table_name} ({columns}) VALUES ({placeholders})'
-
-        rows = [tuple(x) for x in df.to_numpy()]
-        cursor.executemany(insert_query, rows)
-        connection.commit()
+        df.to_sql(
+            name=table,
+            con=engine,
+            schema=schema,
+            if_exists='append',
+            index=False,
+            chunksize=1000
+        )
 
         print(f'{table_name} is fully loaded')
 
@@ -74,10 +65,3 @@ try:
 
 except Exception as e:
     print(f'Error: {e}')
-
-finally:
-    try:
-        cursor.close()
-        connection.close()
-    except Exception:
-        pass
