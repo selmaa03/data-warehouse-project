@@ -10,9 +10,16 @@ record of the source data for auditing and reprocessing before applying any tran
 
 import boto3
 import pandas as pd
+import logging
 import config
 from config import get_db_engine
 from sqlalchemy import text
+
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s [%(levelname)s]: %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S'
+)
 
 s3 = boto3.client(
     's3',
@@ -36,20 +43,20 @@ datasets = {
 
 try:
     engine = get_db_engine()
-    print('Connection Successful!')
+    logging.info('Connection Successful!')
 
     for s3_key, table_name in datasets.items():
-        print(f'\nDownloading {s3_key} from S3...')
+        logging.info(f'\nDownloading {s3_key} from S3...')
         s3_object = s3.get_object(Bucket=S3_BUCKET_NAME, Key=s3_key)
         df = pd.read_csv(s3_object['Body'])
 
         schema, table = table_name.split('.')
 
-        print(f'Truncating {table_name} to ensure a fresh load...')
+        logging.info(f'Truncating {table_name} to ensure a fresh load...')
         with engine.begin() as conn:
             conn.execute(text(f"TRUNCATE TABLE {schema}.{table}"))
 
-        print(f'Inserting {len(df)} rows into {table_name}...')
+        logging.info(f'Inserting {len(df)} rows into {table_name}...')
         df.to_sql(
             name=table,
             con=engine,
@@ -59,9 +66,9 @@ try:
             chunksize=1000
         )
 
-        print(f'{table_name} is fully loaded')
+        logging.info(f'{table_name} is fully loaded')
 
-    print('All files successfully loaded.')
+    logging.info('All files successfully loaded.')
 
 except Exception as e:
-    print(f'Error: {e}')
+    logging.error(f'Error: {e}')
