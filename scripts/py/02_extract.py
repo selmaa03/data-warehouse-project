@@ -13,7 +13,7 @@ import boto3
 import config
 import time
 
-def upload_to_s3():
+def upload_to_s3_bronze():
 
     start_time = time.perf_counter()
 
@@ -53,5 +53,4 @@ def upload_to_s3():
     print(f"Total load duration: {total_duration} seconds")
 
 if __name__ == "__main__":
-    upload_to_s3()
-
+    upload_to_s3_bronze()
