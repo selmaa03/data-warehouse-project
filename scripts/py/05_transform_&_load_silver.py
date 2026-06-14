@@ -7,6 +7,7 @@ This script:
 - Converts all relevant timestamp columns to pandas datetime (handling nulls).
 - Filters out canceled orders (if any).
 - Renames columns to more standardized silver layer names.
+- Load transformed data into silver schema.
 '''
 
 import logging
