@@ -37,7 +37,7 @@ if not all([DB_SERVER, DB_NAME, DB_USER, DB_PASSWORD]):
     raise ValueError('Database connection credentials (SERVER/NAME/USER/PASSWORD) are missing from your .env file!')
 
 def get_db_engine():
-    # Safe-encode password to handle any special characters seamlessly
+    # Safe-encode password to handle special characters
     encoded_password = urllib.parse.quote_plus(DB_PASSWORD)
 
     # Connection string structured for SQL Server Authentication (SQL Login)
