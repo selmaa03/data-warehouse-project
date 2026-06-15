@@ -1,5 +1,5 @@
 '''
-Step 6:
+Step 7:
 This script is designed to model a Star Schema.
 It pulls data from Silver layer which is already processed data, transform as fact or dimension tables
 and securely stream/load them into AWS S3 bucket(gold-data-folder) of Datalake.
@@ -16,10 +16,10 @@ load_dotenv()
 
 silver_category_name_translation_df = pd.read_parquet('s3://dwh-olist-bucket/processed-data-folder/catogary_name_translation/catogary_name_translation_clean.parquet')
 silver_customers_df = pd.read_parquet('s3://dwh-olist-bucket/processed-data-folder/customers/customers_clean.parquet')
-silver_geolocation_df = pd.read_parquet('s3://dwh-olist-bucket/processed-data-folder/geolocation/geolocation_clean.parquet')
+#silver_geolocation_df = pd.read_parquet('s3://dwh-olist-bucket/processed-data-folder/geolocation/geolocation_clean.parquet')
 silver_order_items_df = pd.read_parquet('s3://dwh-olist-bucket/processed-data-folder/order_items/order_items_clean.parquet')
 silver_order_payments_df = pd.read_parquet('s3://dwh-olist-bucket/processed-data-folder/order_payments/order_payments_clean.parquet')
-silver_order_reviews_df = pd.read_parquet('s3://dwh-olist-bucket/processed-data-folder/order_reviews/order_reviews_clean.parquet')
+#silver_order_reviews_df = pd.read_parquet('s3://dwh-olist-bucket/processed-data-folder/order_reviews/order_reviews_clean.parquet')
 silver_orders_df = pd.read_parquet('s3://dwh-olist-bucket/processed-data-folder/orders/orders_clean.parquet')
 silver_products_df = pd.read_parquet('s3://dwh-olist-bucket/processed-data-folder/products/products_clean.parquet')
 silver_sellers_df = pd.read_parquet('s3://dwh-olist-bucket/processed-data-folder/sellers/sellers_clean.parquet')
