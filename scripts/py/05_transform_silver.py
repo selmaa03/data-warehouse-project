@@ -1,7 +1,6 @@
 '''
 Step 5:
 This script:
-- Reads your bronze CSV data.
 - Checks for NULLs and Duplicates in Primary Key. ( Expectation: No Result )
 - Drops duplicates and rows missing critical IDs or timestamps.
 - Converts all relevant timestamp columns to pandas datetime (handling nulls).
