@@ -7,17 +7,12 @@ This project implements a modern data warehouse architecture using SQL Server an
 ## Data Architecture
 ![Data Medallion Architecture](docs/Data%20Medallion%20Architecture.jpg)
 The project follows the Medallion Architecture Bronze, Silver, and Gold layers:
-**1. Bronze Layer:** Ingest raw CSV files from the Olist dataset into AWS S3, maintain the original format as a source of truth.
-**2. Silver Layer:** Process raw data, handle missing values, standardize data types, and establish clean relational schemas and store processed data in both AWS S3 and SQL Server.
-**3. Gold Layer:** Transform the cleaned data into star schema with dimensional modeling (Fact and Dimension tables) for reporting and analytics.
-
+1.  **Bronze Layer:** Ingest raw CSV files from the Olist dataset into AWS S3, maintain the original format as a source of truth.
+2. **2. Silver Layer:** Process raw data, handle missing values, standardize data types, and establish clean relational schemas and store processed data in both AWS S3 and SQL Server.
+3. **3. Gold Layer:** Transform the cleaned data into star schema with dimensional modeling (Fact and Dimension tables) for reporting and analytics.
+  
 ## Project Structure
 ```
-datasource/    -> Source CSV datasets
-docs/          -> Documentation and architecture diagrams
-scripts/py/    -> Python ETL scripts
-scripts/sql/   -> SQL DDL scripts
-
 data-warehouse-project/
 │
 ├── datasource/  # Source of CSV datasets
