@@ -61,13 +61,21 @@ dwh-olist-bucket/
 │ ├── catogary_name_translation/
 | | ├── catogary_name_translation_clean.parquet
 │ ├── customers/
+| | ├── customers_clean.parquet
 │ ├── geolocation/
+| | ├── geolocation_clean.parquet
 │ ├── order_items/
+| | ├── order_items_clean.parquet
 │ ├── order_payments/
+| | ├── order_payments_clean.parquet
 │ ├── order_reviews/
+| | ├── order_reviews_clean.parquet
 │ ├── orders/
+| | ├── orders_clean.parquet
 │ ├── products/
-│ └── sellers/
+| | ├── products_clean.parquet
+│ ├── sellers/
+| └── sellers_clean.parquet
 │
 ├── gold-data-folder/
 │ ├── dim_customers.parquet
