@@ -32,7 +32,6 @@ data-warehouse-project/
 │     ├── 03_DDL_silver.sql
 │     └── 04_DDL_gold.sql
 |
-├── requirements.txt
 └── README.md
 ```
 
