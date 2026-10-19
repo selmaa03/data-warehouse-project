@@ -15,17 +15,17 @@ The project follows the Medallion Architecture Bronze, Silver, and Gold layers:
 ```
 data-warehouse-project/
 │
-├── datasource/  # Source of CSV datasets
-├── docs/        # Documentation and architecture diagrams
+├── datasource/
+├── docs/
 ├── scripts
 │ ├── py/
-│ │   ├── config.py                  # Environment and configuration setup
-│ │   ├── 02_extract_bronze.py       # Ingests raw CSVs to S3 Bronze
-│ │   ├── 03_explore_bronze.py       # Data exploration and profiling (OPTIONAL)
-│ │   ├── 04_load_bronze.py          # Loads raw data into SQL Server Bronze
-│ │   ├── 05_transform_silver.py     # Cleanses and transforms data and load to S3 as Parquet
-│ │   ├── 06_load_silver.py          # Loads clean data into SQL Server Silver
-│ │   └── 07_transform_gold.py       # Builds analytical Fact/Dim tables and loads into SQL Server Gold
+│ │   ├── config.py
+│ │   ├── 02_extract_bronze.py
+│ │   ├── 03_explore_bronze.py
+│ │   ├── 04_load_bronze.py
+│ │   ├── 05_transform_silver.py
+│ │   ├── 06_load_silver.py
+│ │   └── 07_transform_gold.py
 │ └── sql/
 │     ├── 01_setup_database.sql      # Database initialization
 │     ├── 02_DDL_bronze.sql          # Schema definition for Bronze layer
