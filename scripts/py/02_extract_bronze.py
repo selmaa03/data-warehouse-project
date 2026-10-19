@@ -4,7 +4,6 @@ This strict is to pull from source and dump raw data to S3.
 
 Boto 3 -> Boto3 is the official Amazon Web Services (AWS) Software Development Kit (SDK) for Python.
 It allows developers to directly interact with and manage AWS services—such as S3, EC2, and DynamoDB—using Python code.
-for more info about S3 service, check: https://docs.aws.amazon.com/boto3/latest/reference/services/s3.html
 '''
 
 import os
