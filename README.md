@@ -27,10 +27,10 @@ data-warehouse-project/
 │ │   ├── 06_load_silver.py
 │ │   └── 07_transform_gold.py
 │ └── sql/
-│     ├── 01_setup_database.sql      # Database initialization
-│     ├── 02_DDL_bronze.sql          # Schema definition for Bronze layer
-│     ├── 03_DDL_silver.sql          # Schema definition for Silver layer
-│     └── 04_DDL_gold.sql            # Schema definition for Gold star schema
+│     ├── 01_setup_database.sql
+│     ├── 02_DDL_bronze.sql
+│     ├── 03_DDL_silver.sql
+│     └── 04_DDL_gold.sql
 |
 ├── requirements.txt
 └── README.md
