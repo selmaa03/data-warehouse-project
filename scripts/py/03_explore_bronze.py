@@ -3,10 +3,10 @@ STEP 3: (OPTIONAL)
 Before starting to silver layer, it is important to explore and understand the data.
 
 Why do this first?
-Data Type Validation: Confirm whether columns are correctly typed (integer, float, string, date).
-Spot Missing Data: You'll see if there are empty (NULL) cells you need to handle.
-Data Consistency Checks: Checks for duplicated rows or IDs
-Basic Statistics: Provides descriptive stats for numeric columns (mean, median, std, min, max).
+- Confirm whether columns are correctly typed (integer, float, string, date).
+- You'll see if there are empty (NULL) cells you need to handle.
+- Checks for duplicated rows or IDs
+- Provides descriptive stats for numeric columns (mean, median, std, min, max).
 '''
 
 import pandas as pd
