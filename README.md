@@ -41,7 +41,7 @@ Please note the following:
 - In the product_category_name_translation table, category is spelled as catogary. For sql and py files, you should consider the misspelling and correct them.
 - Create a .env file containing your own aws access keys, user, and db connection details and other environment variables.
 
-## S3 Data Lake Structure
+## AWS S3 Structure
 ```
 dwh-olist-bucket/
 │
