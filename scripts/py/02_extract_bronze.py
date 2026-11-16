@@ -1,9 +1,6 @@
 '''
 STEP 2:
-This strict is to pull from source and dump raw data to S3.
-
-Boto 3 -> Boto3 is the official Amazon Web Services (AWS) Software Development Kit (SDK) for Python.
-It allows developers to directly interact with and manage AWS services—such as S3, EC2, and DynamoDB—using Python code.
+This strict is to pull original raw data from local source and dump them into to S3 Bucket in raw data folder.
 '''
 
 import os
