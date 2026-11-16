@@ -1,12 +1,12 @@
 '''
 Step 5:
 This script:
+- Reads your bronze CSV data.
 - Checks for NULLs and Duplicates in Primary Key. ( Expectation: No Result )
 - Drops duplicates and rows missing critical IDs or timestamps.
 - Converts all relevant timestamp columns to pandas datetime (handling nulls).
 - Filters out canceled orders (if any).
 - Renames columns to more standardized silver layer names.
-- Load transformed data into sql server silver schema.
 '''
 
 import logging
@@ -65,19 +65,20 @@ def clean_orders(engine):
         logging.warning(f"Removed {duplicate_count} duplicate order records.")
 
     # 3. LOAD TO SILVER
-    logging.info("Truncating target silver table to refresh...")
+    logging.info("Truncating silver.orders to refresh...")
     with engine.begin() as conn:
         conn.execute(text("TRUNCATE TABLE silver.orders;"))
 
-    logging.info("Loading data into silver.orders...")
-    # 'append' preserves the table structure we defined in ddl_silver.sql
-    df.to_sql(
-        name='orders',
-        con=engine,
-        schema='silver',
-        if_exists='append',
-        index=False
-    )
+        logging.info("Loading data into silver.orders...")
+        df.to_sql(
+            name='orders',
+            con=conn,
+            schema='silver',
+            if_exists='append',
+            index=False,
+            chunksize=1000,
+        )
+
     logging.info(f"Successfully loaded {len(df)} clean rows into silver.orders!\n")
 
 
@@ -107,19 +108,21 @@ def clean_catogary_name_translateion(engine):
     df = df.drop_duplicates(subset=['product_category_name'])
 
     # 3. LOAD TO SILVER
-    logging.info("Truncating target silver table to refresh...")
+    logging.info("Truncating silver.catogary_name_translation table to refresh...")
     with engine.begin() as conn:
         conn.execute(text("TRUNCATE TABLE silver.catogary_name_translation;"))
 
-    logging.info("Loading data into silver.catogary_name_translation...")
-    df.to_sql(
-        name='catogary_name_translation',
-        con=engine,
-        schema='silver',
-        if_exists='append',
-        index=False
-    )
-    logging.info(f"Successfully loaded {len(df)} clean rows silver.catogary_name_translation!\n")
+        logging.info("Loading data into silver.catogary_name_translation...")
+        df.to_sql(
+            name='catogary_name_translation',
+            con=conn,
+            schema='silver',
+            if_exists='append',
+            index=False,
+            chunksize=1000,
+        )
+
+    logging.info(f"Successfully loaded {len(df)} clean rows into silver.catogary_name_translation!\n")
 
 
 
@@ -155,18 +158,20 @@ def clean_customers(engine):
         logging.warning(f"Removed {duplicate_count} duplicate customer records.")
 
     # 3. LOAD TO SILVER
-    logging.info("Truncating target silver table to refresh...")
+    logging.info("Truncating silver.customers table to refresh...")
     with engine.begin() as conn:
         conn.execute(text("TRUNCATE TABLE silver.customers;"))
 
-    logging.info("Loading data into silver.customers...")
-    df.to_sql(
-        name='customers',
-        con=engine,
-        schema='silver',
-        if_exists='append',
-        index=False
-    )
+        logging.info("Loading data into silver.customers...")
+        df.to_sql(
+            name='customers',
+            con=conn,
+            schema='silver',
+            if_exists='append',
+            index=False,
+            chunksize=1000,
+        )
+
     logging.info(f"Successfully loaded {len(df)} clean rows into silver.customers!\n")
 
 
@@ -201,18 +206,20 @@ def clean_geolocation(engine):
         logging.warning(f"Removed {duplicate_count} duplicate geolocation records.")
 
     # 3. LOAD TO SILVER
-    logging.info("Truncating target silver table to refresh...")
+    logging.info("Truncating silver.geolocation table to refresh...")
     with engine.begin() as conn:
         conn.execute(text("TRUNCATE TABLE silver.geolocation;"))
 
-    logging.info("Loading data into silver.geolocation...")
-    df.to_sql(
-        name='geolocation',
-        con=engine,
-        schema='silver',
-        if_exists='append',
-        index=False
-    )
+        logging.info("Loading data into silver.geolocation...")
+        df.to_sql(
+            name='geolocation',
+            con=conn,
+            schema='silver',
+            if_exists='append',
+            index=False,
+            chunksize=1000,
+        )
+
     logging.info(f"Successfully loaded {len(df)} clean rows into silver.geolocation!\n")
 
 
@@ -256,18 +263,20 @@ def clean_order_items(engine):
         logging.warning(f"Removed {duplicate_count} duplicate order_items records.")
 
     # 3. LOAD TO SILVER
-    logging.info("Truncating target silver table to refresh...")
+    logging.info("Truncating silver.order_items table to refresh...")
     with engine.begin() as conn:
         conn.execute(text("TRUNCATE TABLE silver.order_items;"))
 
-    logging.info("Loading data into silver.order_items...")
-    df.to_sql(
-        name='order_items',
-        con=engine,
-        schema='silver',
-        if_exists='append',
-        index=False
-    )
+        logging.info("Loading data into silver.order_items...")
+        df.to_sql(
+            name='order_items',
+            con=conn,
+            schema='silver',
+            if_exists='append',
+            index=False,
+            chunksize=1000,
+        )
+
     logging.info(f"Successfully loaded {len(df)} clean rows into silver.order_items!\n")
 
 
@@ -306,18 +315,20 @@ def clean_order_payments(engine):
         logging.warning(f"Removed {duplicate_count} duplicate order_payments records.")
 
     # 3. LOAD TO SILVER
-    logging.info("Truncating target silver table to refresh...")
+    logging.info("Truncating silver.order_payments table to refresh...")
     with engine.begin() as conn:
         conn.execute(text("TRUNCATE TABLE silver.order_payments;"))
 
-    logging.info("Loading data into silver.order_payments...")
-    df.to_sql(
-        name='order_payments',
-        con=engine,
-        schema='silver',
-        if_exists='append',
-        index=False
-    )
+        logging.info("Loading data into silver.order_payments...")
+        df.to_sql(
+            name='order_payments',
+            con=conn,
+            schema='silver',
+            if_exists='append',
+            index=False,
+            chunksize=1000,
+        )
+
     logging.info(f"Successfully loaded {len(df)} clean rows into silver.order_payments!\n")
 
 
@@ -357,18 +368,20 @@ def clean_order_reviews(engine):
         logging.warning(f"Removed {duplicate_count} duplicate order_reviews records.")
 
     # 3. LOAD TO SILVER
-    logging.info("Truncating target silver table to refresh...")
+    logging.info("Truncating silver.order_reviews table to refresh...")
     with engine.begin() as conn:
         conn.execute(text("TRUNCATE TABLE silver.order_reviews;"))
 
-    logging.info("Loading data into silver.order_reviews...")
-    df.to_sql(
-        name='order_reviews',
-        con=engine,
-        schema='silver',
-        if_exists='append',
-        index=False
-    )
+        logging.info("Loading data into silver.order_reviews...")
+        df.to_sql(
+            name='order_reviews',
+            con=conn,
+            schema='silver',
+            if_exists='append',
+            index=False,
+            chunksize=1000,
+        )
+
     logging.info(f"Successfully loaded {len(df)} clean rows into silver.order_reviews!\n")
 
 
@@ -418,18 +431,20 @@ def clean_products(engine):
         logging.warning(f"Removed {duplicate_count} duplicate products records.")
 
     # 3. LOAD TO SILVER
-    logging.info("Truncating target silver table to refresh...")
+    logging.info("Truncating silver.products table to refresh...")
     with engine.begin() as conn:
         conn.execute(text("TRUNCATE TABLE silver.products;"))
 
-    logging.info("Loading data into silver.products...")
-    df.to_sql(
-        name='products',
-        con=engine,
-        schema='silver',
-        if_exists='append',
-        index=False
-    )
+        logging.info("Loading data into silver.products...")
+        df.to_sql(
+            name='products',
+            con=conn,
+            schema='silver',
+            if_exists='append',
+            index=False,
+            chunksize=1000,
+        )
+
     logging.info(f"Successfully loaded {len(df)} clean rows into silver.products!\n")
 
 
@@ -464,47 +479,63 @@ def clean_sellers(engine):
         logging.warning(f"Removed {duplicate_count} duplicate sellers records.")
 
     # 3. LOAD TO SILVER
-    logging.info("Truncating target silver table to refresh...")
+    logging.info("Truncating silver.sellers table to refresh...")
     with engine.begin() as conn:
         conn.execute(text("TRUNCATE TABLE silver.sellers;"))
 
-    logging.info("Loading data into silver.sellers...")
-    df.to_sql(
-        name='sellers',
-        con=engine,
-        schema='silver',
-        if_exists='append',
-        index=False
-    )
+        logging.info("Loading data into silver.sellers...")
+        df.to_sql(
+            name='sellers',
+            con=conn,
+            schema='silver',
+            if_exists='append',
+            index=False,
+            chunksize=1000,
+        )
+
     logging.info(f"Successfully loaded {len(df)} clean rows into silver.sellers!\n")
 
 
 
 def run_silver_pipeline():
 
-    engine = get_db_engine()
+    engine = None
+    failed_tables = []
 
-    functions = [
-        clean_orders,
-        clean_catogary_name_translateion,
-        clean_customers,
-        clean_geolocation,
-        clean_order_items,
-        clean_order_payments,
-        clean_order_reviews,
-        clean_products,
-        clean_sellers
-    ]
+    try:
+        engine = get_db_engine()
 
-    for func in functions:
-        try:
-            func(engine)
-        except Exception as e:
-            logging.warning(f"Error running {func.__name__}:{e}", exc_info=True)
-            # NOTE: Adding exc_info=True will print out the exact line number and problem if the table crashes
-            continue
+        with engine.connect() as conn:
+            db_name = conn.execute(text("SELECT DB_NAME()")).scalar()
+            logging.info(f"Connected to database: {db_name}")
 
-    logging.info("All Silver Layer transformations executed successfully!")
+        functions = [
+            clean_orders,
+            clean_catogary_name_translateion,
+            clean_customers,
+            clean_geolocation,
+            clean_order_items,
+            clean_order_payments,
+            clean_order_reviews,
+            clean_products,
+            clean_sellers
+        ]
+
+        for func in functions:
+            try:
+                func(engine)
+            except Exception:
+                failed_tables.append(func.__name__)
+                logging.exception(f"Error running {func.__name__}")
+
+        if failed_tables:
+            logging.error(f"Failed transformations: {failed_tables}")
+        else:
+            logging.info("All Silver Layer transformations executed successfully!")
+
+    finally:
+        if engine is not None:
+            engine.dispose()
 
 if __name__ == "__main__":
     run_silver_pipeline()
