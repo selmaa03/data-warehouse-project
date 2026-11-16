@@ -1,7 +1,7 @@
 '''
 STEP 1:
 The config.py file (The Gatekeeper): This script uses a Python library called python-dotenv to
-read .env file and expose those variables to the rest of your application safely.
+read .env file and expose those variables to the rest of your pipeline safely.
 
 By building config.py, your ingestion, transformation, and loading scripts can simply import
 it to get database passwords or AWS keys without hardcoding them.
