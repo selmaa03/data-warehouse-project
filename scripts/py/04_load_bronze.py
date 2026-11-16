@@ -58,9 +58,7 @@ try:
           aws_access_key_id=config.AWS_ACCESS_KEY_ID,
           aws_secret_access_key=config.AWS_SECRET_ACCESS_KEY,
       )
-      s3_object = s3.get_object(
-          Bucket=S3_BUCKET_NAME, Key=f'raw-data-folder/{file_name}'
-      )
+      s3_object = s3.get_object(Bucket=S3_BUCKET_NAME, Key=f'raw-data-folder/{file_name}')
       df = pd.read_csv(s3_object['Body'])
 
     schema, table = table_name.split('.')
