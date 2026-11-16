@@ -1,6 +1,6 @@
 '''
 STEP 4:
-This script connects to the SQL Server database via Azure Data Studio.
+This script connects to SQL Server using SQLAlchemy.
 It pulls raw CSV files directly from cloud storage (AWS S3) and securely stream them
 into the 'bronze' schema of the Data Warehouse.
 
@@ -41,12 +41,15 @@ datasets = {
     'raw-data-folder/olist_order_reviews_dataset.csv': 'bronze.order_reviews'
 }
 
+engine = None
+
 try:
     engine = get_db_engine()
     logging.info('Connection Successful!')
 
     for s3_key, table_name in datasets.items():
         logging.info(f'\nDownloading {s3_key} from S3...')
+        
         s3_object = s3.get_object(Bucket=S3_BUCKET_NAME, Key=s3_key)
         df = pd.read_csv(s3_object['Body'])
 
@@ -55,20 +58,23 @@ try:
         logging.info(f'Truncating {table_name} to ensure a fresh load...')
         with engine.begin() as conn:
             conn.execute(text(f"TRUNCATE TABLE {schema}.{table}"))
-
-        logging.info(f'Inserting {len(df)} rows into {table_name}...')
-        df.to_sql(
-            name=table,
-            con=engine,
-            schema=schema,
-            if_exists='append',
-            index=False,
-            chunksize=1000
-        )
-
+            
+            logging.info(f'Inserting {len(df)} rows into {table_name}...')
+            
+            df.to_sql(
+                name=table,
+                con=conn,
+                schema=schema,
+                if_exists='append',
+                index=False,
+                chunksize=1000
+            )
         logging.info(f'{table_name} is fully loaded')
-
     logging.info('All files successfully loaded.')
 
 except Exception as e:
-    logging.error(f'Error: {e}')
+    logging.exception(f'Error during Bronze ingestion: {e}')
+
+finally:
+    if engine is not None:
+        engine.dispose()
