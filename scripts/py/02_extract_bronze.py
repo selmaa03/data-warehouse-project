@@ -49,7 +49,7 @@ def upload_to_s3_bronze():
             logging.error(f'Failed to upload {filename}. Error: {e}')
             continue
 
-    logging.info(f'All available files uploaded to data lake: {config.S3_BUCKET_NAME}')
+    logging.info(f'All available files uploaded to: {config.S3_BUCKET_NAME}')
 
     end_time = time.perf_counter()
     total_duration = end_time - start_time
