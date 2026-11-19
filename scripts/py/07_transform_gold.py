@@ -3,9 +3,6 @@ Step 7:
 This script is designed to model a Star Schema.
 It pulls data from Silver layer which is already processed data, transform as fact or dimension tables
 and securely stream/load them into AWS S3 bucket(gold-data-folder) of Datalake.
-
-DuckDB -> DuckDB is an open-source column-oriented relational database, in-process SQL database management
-system specifically built for Online Analytical Processing (OLAP).
 '''
 
 import duckdb
