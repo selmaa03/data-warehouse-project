@@ -25,13 +25,6 @@ silver_sellers_df = pd.read_parquet('s3://dwh-olist-bucket/processed-data-folder
 # FACT TABLE
 fact_sales_df = duckdb.sql(
     '''
-    WITH aggregated_payments AS (
-        SELECT 
-            order_id,
-            SUM(payment_value) AS total_payment_value
-        FROM silver_order_payments_df
-        GROUP BY order_id
-    )
     SELECT
         oi.order_id,
         oi.order_item_id,
@@ -43,12 +36,10 @@ fact_sales_df = duckdb.sql(
         o.order_delivered_customer_date,
         oi.price,
         oi.freight_value,
-        COALESCE(ap.total_payment_value, 0) AS total_payment_value
-    FROM silver_order_items_df as oi
-    INNER JOIN silver_orders_df as o
+        oi.price + oi.freight_value AS item_total_value
+    FROM silver_order_items_df AS oi
+    INNER JOIN silver_orders_df AS o
         ON oi.order_id = o.order_id
-    LEFT JOIN aggregated_payments as ap
-        ON oi.order_id = ap.order_id
     ORDER BY o.order_purchase_timestamp DESC
     '''
 ).df()
