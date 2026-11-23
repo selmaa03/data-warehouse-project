@@ -33,7 +33,7 @@ The Gold Layer provides business-ready data marts, structured to support analyti
 | `order_delivered_customer_date` | `DATETIME2` | Delivery date timestamp when the product reached the customer formatted as YYYY-MM-DD HH:MI:SS.nnnnnnn (e.g., '2018-08-22 14:40:48.0000000') |
 | `price` | `DECIMAL(10,2)` | Product sale price |
 | `freight_value` | `DECIMAL(10,2)` | Shipping cost |
-|`total_payment_value` | `DECIMAL(10,2)` | Total payment amount associated with the order. This value is repeated for all items belonging to the same order (defaults to '0' if missing).|
+|`item_total_value` | `DECIMAL(11,2)` | Total value of product price and shipping cost(freight value) for each item|
 
 
 ## Dimension Tables
