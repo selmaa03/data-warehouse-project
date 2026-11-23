@@ -6,14 +6,7 @@ So you can’t write something to the database, you can just view/read.
 Views can be used as data marts too.
 */
 
-CREATE VIEW Gold.fact_sales AS
-WITH aggregated_payments AS (
-    SELECT 
-        order_id,
-        SUM(payment_value) AS total_payment_value
-    FROM Silver.order_payments
-    GROUP BY order_id
-)
+CREATE OR ALTER VIEW Gold.fact_sales AS
 SELECT
     oi.order_id,
     oi.order_item_id,
@@ -25,12 +18,10 @@ SELECT
     o.order_delivered_customer_date,
     oi.price,
     oi.freight_value,
-    ISNULL(ap.total_payment_value, 0) AS total_payment_value
-FROM Silver.order_items as oi
-INNER JOIN Silver.orders as o
-    ON oi.order_id = o.order_id
-LEFT JOIN aggregated_payments as ap
-    ON oi.order_id = ap.order_id;
+    oi.price + oi.freight_value AS item_total_value
+FROM Silver.order_items AS oi
+INNER JOIN Silver.orders AS o
+    ON oi.order_id = o.order_id;
 GO
 
 
